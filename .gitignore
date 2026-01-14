@@ -38,3 +38,5 @@ out/
 
 application-home.properties
 application-comp.properties
+
+.env
