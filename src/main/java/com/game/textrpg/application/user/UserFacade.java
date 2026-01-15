@@ -39,6 +39,11 @@ public class UserFacade {
         return user;
     }
 
+    /**
+     * 본인 정보 가져오기
+     * @param token
+     * @return
+     */
     public UserInfo CheckAuth(String token) {
         UserInfo user = userService.checkAuth(token);
         

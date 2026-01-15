@@ -72,19 +72,36 @@ public class UserApiController {
         return CommonResponse.success(response);
     }
 
+    /**
+     * 본인 정보 가져오기
+     * @param request
+     * @return
+     */
     @GetMapping("/me")
     public CommonResponse<User> CheckAuth(HttpServletRequest request) {
         String token = getCookieValue(request, "accessToken");
         log.info("token : {}", token);
-        if(token != null && !token.isEmpty()){
-            UserInfo userInfo = userFacade.CheckAuth(token);
-
-            var response = new UserDto.UserResponse(userInfo);
-            return CommonResponse.success(response);
+        if(token == null || token.isEmpty()){
+            return null;
         }
+        
+        UserInfo userInfo = userFacade.CheckAuth(token);
 
-        return CommonResponse.fail(null);
+        var response = new UserDto.UserResponse(userInfo);
+        return CommonResponse.success(response);
     }
+
+    /**
+     * 로그아웃
+     * @param response
+     * @return
+     */
+    @PostMapping("/logout")
+    public CommonResponse<Void> postMethodName(HttpServletResponse response) {
+        response.addHeader("Set-Cookie", "accessToken=; Path=/; <ax-Age=0; HttpOnly; SameSite=Strict");
+        return CommonResponse.success(null);
+    }
+    
 
     private String getCookieValue(HttpServletRequest request, String name){
         if(request.getCookies() == null) return null;
