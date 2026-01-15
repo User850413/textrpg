@@ -1,5 +1,7 @@
 package com.game.textrpg.infrastructure.user;
 
+import javax.naming.AuthenticationException;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,21 @@ public class UserServiceImpl implements UserService{
         User newUser = userRepository.save(user);
 
         return new UserInfo(newUser);
+    }
+
+    @Override
+    public UserInfo login(UserCommand user) throws AuthenticationException {
+        User foundUser = userRepository.findByUserId(user.getUserId());
+
+        if(foundUser == null){
+            throw new AuthenticationException("Invalid userId or password");
+        }
+
+        if (!passwordEncoder.matches(user.getUserPwd(), foundUser.getUserPwd())) {
+            throw new AuthenticationException("Invalid userId or password");
+        }
+        
+        return new UserInfo(foundUser);
     }
     
 }
