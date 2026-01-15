@@ -1,6 +1,7 @@
 package com.game.textrpg.domains.jwt;
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 import com.game.textrpg.domains.user.UserInfo;

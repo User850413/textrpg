@@ -59,12 +59,10 @@ public class UserDto {
     @Getter
     @ToString
     public static class UserResponse {
-        private final String id;
         private final String userId;
         private final String userName;
 
         public UserResponse(UserInfo userInfo) {
-            this.id = userInfo.getId();
             this.userId = userInfo.getUserId();
             this.userName = userInfo.getUserName();
         }

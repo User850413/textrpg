@@ -10,14 +10,22 @@ import com.game.textrpg.domains.user.UserCommand;
 import com.game.textrpg.domains.user.UserInfo;
 
 import jakarta.validation.Valid;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
 import javax.naming.AuthenticationException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/api/user")
@@ -26,9 +34,17 @@ public class UserApiController {
 
     private final UserFacade userFacade;
     private final JwtProvider jwtProvider;
-    
+    private static final Logger log = LoggerFactory.getLogger(UserApiController.class);
+
+    /**
+     * 로그인
+     * @param request
+     * @param response
+     * @return
+     * @throws AuthenticationException
+     */
     @PostMapping("/login")
-    public CommonResponse<User> postMethodName(@RequestBody @Valid UserDto.LoginRequest request, HttpServletResponse response) throws AuthenticationException {
+    public CommonResponse<User> Login(@RequestBody @Valid UserDto.LoginRequest request, HttpServletResponse response) throws AuthenticationException {
         UserCommand user = request.toCommand();
         UserInfo userInfo = userFacade.login(user);
         var userResponse = new UserDto.UserResponse(userInfo);
@@ -36,18 +52,49 @@ public class UserApiController {
         String token = jwtProvider.createToken(userInfo);
         
         // HttpOnly 쿠키에 토큰 저장
-        response.addHeader("accessToken-tpg", 
-            "jwtToken=" + token + "; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=" + (60 * 60 * 6));
+        response.addHeader("set-Cookie", 
+            "accessToken=" + token + "; Path=/; HttpOnly; SameSite=Strict; Max-Age=" + (60 * 60 * 6));
 
         return CommonResponse.success(userResponse);
     }
 
+    /**
+     * 회원가입
+     * @param request
+     * @return
+     */
     @PostMapping("/register")
-    public CommonResponse<User> postMethodName(@RequestBody @Valid UserDto.RegistRequest request) {
+    public CommonResponse<User> Register(@RequestBody @Valid UserDto.RegistRequest request) {
         UserCommand user = request.toCommand();
         UserInfo userInfo = userFacade.registUser(user);
         var response = new UserDto.UserResponse(userInfo);
 
         return CommonResponse.success(response);
+    }
+
+    @GetMapping("/me")
+    public CommonResponse<User> CheckAuth(HttpServletRequest request) {
+        String token = getCookieValue(request, "accessToken");
+        log.info("token : {}", token);
+        if(token != null && !token.isEmpty()){
+            UserInfo userInfo = userFacade.CheckAuth(token);
+
+            var response = new UserDto.UserResponse(userInfo);
+            return CommonResponse.success(response);
+        }
+
+        return CommonResponse.fail(null);
+    }
+
+    private String getCookieValue(HttpServletRequest request, String name){
+        if(request.getCookies() == null) return null;
+
+        for(Cookie cookie : request.getCookies()){
+            if(name.equals(cookie.getName())){
+                return (String) cookie.getValue();
+            }
+        }
+
+        return null;
     }
 }

@@ -27,9 +27,21 @@ public class UserFacade {
         return user;
     }
 
+    /**
+     * 로그인
+     * @param command
+     * @return
+     * @throws AuthenticationException
+     */
     public UserInfo login(UserCommand command) throws AuthenticationException {
         UserInfo user = userService.login(command);
 
+        return user;
+    }
+
+    public UserInfo CheckAuth(String token) {
+        UserInfo user = userService.checkAuth(token);
+        
         return user;
     }
 }

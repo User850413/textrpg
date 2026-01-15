@@ -1,10 +1,16 @@
 package com.game.textrpg.infrastructure.user;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import javax.naming.AuthenticationException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.game.textrpg.domains.jwt.JwtProvider;
 import com.game.textrpg.domains.user.User;
 import com.game.textrpg.domains.user.UserCommand;
 import com.game.textrpg.domains.user.UserInfo;
@@ -17,6 +23,8 @@ public class UserServiceImpl implements UserService{
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public UserInfo register(UserCommand userCommand) {
@@ -41,6 +49,21 @@ public class UserServiceImpl implements UserService{
         }
         
         return new UserInfo(foundUser);
+    }
+
+    @Override
+    public UserInfo checkAuth(String token) {
+        log.debug("checkAuth : {}", token);
+        UUID id = UUID.fromString(jwtProvider.getIdFromToken(token));
+
+        log.debug("id : {}", id);
+        User authenticatedUser = userRepository.findById(id).orElse(null);
+
+        if(authenticatedUser == null) {
+            return null;
+        }
+
+        return new UserInfo(authenticatedUser);
     }
     
 }
