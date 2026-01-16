@@ -10,16 +10,14 @@ import com.game.textrpg.domains.user.UserCommand;
 import com.game.textrpg.domains.user.UserInfo;
 
 import jakarta.validation.Valid;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 
 import javax.naming.AuthenticationException;
 
@@ -44,7 +42,7 @@ public class UserApiController {
      * @throws AuthenticationException
      */
     @PostMapping("/login")
-    public CommonResponse<User> Login(@RequestBody @Valid UserDto.LoginRequest request, HttpServletResponse response) throws AuthenticationException {
+    public CommonResponse<UserInfo> Login(@RequestBody @Valid UserDto.LoginRequest request, HttpServletResponse response) throws AuthenticationException {
         UserCommand user = request.toCommand();
         UserInfo userInfo = userFacade.login(user);
         var userResponse = new UserDto.UserResponse(userInfo);
@@ -64,7 +62,7 @@ public class UserApiController {
      * @return
      */
     @PostMapping("/register")
-    public CommonResponse<User> Register(@RequestBody @Valid UserDto.RegistRequest request) {
+    public CommonResponse<UserInfo> Register(@RequestBody @Valid UserDto.RegistRequest request) {
         UserCommand user = request.toCommand();
         UserInfo userInfo = userFacade.registUser(user);
         var response = new UserDto.UserResponse(userInfo);
@@ -74,18 +72,21 @@ public class UserApiController {
 
     /**
      * 본인 정보 가져오기
-     * @param request
      * @return
      */
     @GetMapping("/me")
-    public CommonResponse<User> CheckAuth(HttpServletRequest request) {
-        String token = getCookieValue(request, "accessToken");
-        log.info("token : {}", token);
-        if(token == null || token.isEmpty()){
+    public CommonResponse<UserInfo> CheckAuth() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (authentication == null || !authentication.isAuthenticated()) {
+            log.warn("인증되지 않은 요청");
             return null;
         }
         
-        UserInfo userInfo = userFacade.CheckAuth(token);
+        String userId = (String) authentication.getPrincipal();
+        log.info("userId: {}", userId);
+        
+        UserInfo userInfo = userFacade.CheckAuth(userId);
 
         var response = new UserDto.UserResponse(userInfo);
         return CommonResponse.success(response);
@@ -103,15 +104,5 @@ public class UserApiController {
     }
     
 
-    private String getCookieValue(HttpServletRequest request, String name){
-        if(request.getCookies() == null) return null;
-
-        for(Cookie cookie : request.getCookies()){
-            if(name.equals(cookie.getName())){
-                return (String) cookie.getValue();
-            }
-        }
-
-        return null;
-    }
 }
+

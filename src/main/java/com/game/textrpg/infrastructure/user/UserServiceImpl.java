@@ -23,7 +23,6 @@ public class UserServiceImpl implements UserService{
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final JwtProvider jwtProvider;
     private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
@@ -52,9 +51,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserInfo checkAuth(String token) {
-        log.debug("checkAuth : {}", token);
-        UUID id = UUID.fromString(jwtProvider.getIdFromToken(token));
+    public UserInfo checkAuth(String idStr) {
+        UUID id = UUID.fromString(idStr);
 
         log.debug("id : {}", id);
         User authenticatedUser = userRepository.findById(id).orElse(null);
