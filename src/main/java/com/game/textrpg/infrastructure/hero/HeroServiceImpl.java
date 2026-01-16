@@ -58,5 +58,11 @@ public class HeroServiceImpl implements HeroService{
 
         return new HeroInfo(newHero);
     }
+
+    @Override
+    public void deleteHero(String idStr) {
+        UUID id = UUID.fromString(idStr);
+        heroRepository.deleteById(id);
+    }
     
 }

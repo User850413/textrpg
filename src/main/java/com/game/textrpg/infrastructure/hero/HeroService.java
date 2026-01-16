@@ -8,4 +8,5 @@ import com.game.textrpg.domains.hero.HeroInfo;
 public interface HeroService {
     List<HeroInfo> findByUser(String userId);
     HeroInfo createHero(HeroCommand command, String userId);
+    void deleteHero(String id);
 }

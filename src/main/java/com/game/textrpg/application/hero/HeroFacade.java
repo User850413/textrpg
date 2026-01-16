@@ -31,6 +31,12 @@ public class HeroFacade {
         return heroes;
     }
 
+    /**
+     * 영웅 생성
+     * @param command
+     * @param userId
+     * @return
+     */
     public HeroInfo createHero(HeroCommand command, String userId) {
         if(command == null || userId == null){
             throw new NullPointerException();
@@ -38,6 +44,13 @@ public class HeroFacade {
         HeroInfo hero = heroService.createHero(command, userId);
 
         return hero;
+    }
+
+    public void deleteHero(String id) {
+        if(id ==null){
+            throw new NullPointerException();
+        }
+        heroService.deleteHero(id);
     }
     
 }
