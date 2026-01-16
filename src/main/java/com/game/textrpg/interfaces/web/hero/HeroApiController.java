@@ -6,10 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.game.textrpg.application.hero.HeroFacade;
 import com.game.textrpg.common.response.CommonResponse;
 import com.game.textrpg.common.util.SecurityUtils;
-import com.game.textrpg.domains.hero.Hero;
 import com.game.textrpg.domains.hero.HeroCommand;
 import com.game.textrpg.domains.hero.HeroInfo;
-import com.game.textrpg.infrastructure.hero.HeroDto;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,14 +37,18 @@ public class HeroApiController {
      * @return
      */
     @GetMapping("/byUser")
-    public CommonResponse<List<HeroInfo>> selectByUser() {
+    public CommonResponse<List<HeroResponseDto>> selectByUser() {
         String userId = SecurityUtils.getCurrentUserId();
 
         if(userId == null){
             log.warn("인증되지 않은 요청");
             return null;
         }
-        List<HeroInfo> heroes = heroFacade.findByUser(userId);
+        List<HeroResponseDto> heroes 
+            = heroFacade.findByUser(userId)
+                        .stream()
+                        .map(HeroInfo::toHeroResponseDto)
+                        .toList();
 
         return CommonResponse.success(heroes);
     }

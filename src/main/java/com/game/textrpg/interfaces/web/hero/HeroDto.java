@@ -1,11 +1,13 @@
-package com.game.textrpg.infrastructure.hero;
+package com.game.textrpg.interfaces.web.hero;
 
 import com.game.textrpg.domains.hero.HeroCommand;
+import com.game.textrpg.domains.hero.HeroInfo;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 public class HeroDto {
 
@@ -23,6 +25,16 @@ public class HeroDto {
                     .level(1)
                     .exp(0)
                     .build();
+        }
+    }
+
+    @Getter
+    @ToString
+    public static class HeroResponse {
+        private final String name;
+
+        public HeroResponse(HeroInfo heroInfo){
+            this.name = heroInfo.getName();
         }
     }
 
