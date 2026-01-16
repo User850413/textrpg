@@ -32,4 +32,7 @@ public class Backpack {
     @Column(name="max_carriage")
     @NonNull
     private Integer maxCarriage;
+
+    @Column(name="is_default")
+    private Boolean isDefault;
 }

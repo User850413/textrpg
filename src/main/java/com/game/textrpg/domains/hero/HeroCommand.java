@@ -13,35 +13,17 @@ import lombok.Getter;
 @Builder
 public class HeroCommand {
     private final String name;
-    private final String locationId;
-    private final String backpackId;
     private final Integer level;
     private final Integer exp;
-    private final String userId;
 
-    public Hero toEntity() {
-        User user = 
-            User.builder()
-                .id(UUID.fromString(userId))
-                .build();
-        
-        Place place = 
-            Place.builder()
-                .id(UUID.fromString(locationId))
-                .build();
-            
-        Backpack backpack = 
-            Backpack.builder()
-                    .id(UUID.fromString(backpackId))
-                    .build();
-
-        return Hero.builder()
-                .name(name)
-                .location(place)
-                .backpack(backpack)
-                .level(level)
-                .exp(exp)
-                .user(user)
-                .build();
-    }
+    // public Hero toEntity(Backpack backpack, Place location, User user) {
+    //     return Hero.builder()
+    //             .name(name)
+    //             .location(location)
+    //             .backpack(backpack)
+    //             .level(level)
+    //             .exp(exp)
+    //             .user(user)
+    //             .build();
+    // }
 }

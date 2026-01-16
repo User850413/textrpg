@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserInfo checkAuth(String idStr) {
+    public UserInfo getUserById(String idStr) {
         UUID id = UUID.fromString(idStr);
 
         log.debug("id : {}", id);
@@ -62,6 +62,17 @@ public class UserServiceImpl implements UserService{
         }
 
         return new UserInfo(authenticatedUser);
+    }
+
+    @Override
+    public User getEntityById(String userIdStr) {
+        if(userIdStr == null){
+            throw new NullPointerException();
+        }
+        UUID id = UUID.fromString(userIdStr);
+
+        User user = userRepository.findById(id).orElse(null);
+        return user;
     }
     
 }

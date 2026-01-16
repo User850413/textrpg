@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.game.textrpg.application.user.UserFacade;
 import com.game.textrpg.common.response.CommonResponse;
+import com.game.textrpg.common.util.SecurityUtils;
 import com.game.textrpg.domains.jwt.JwtProvider;
 import com.game.textrpg.domains.user.User;
 import com.game.textrpg.domains.user.UserCommand;
@@ -16,8 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.Authentication;
 
 import javax.naming.AuthenticationException;
 
@@ -76,15 +75,12 @@ public class UserApiController {
      */
     @GetMapping("/me")
     public CommonResponse<UserInfo> CheckAuth() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = SecurityUtils.getCurrentUserId();
         
-        if (authentication == null || !authentication.isAuthenticated()) {
+        if (userId == null) {
             log.warn("인증되지 않은 요청");
             return null;
         }
-        
-        String userId = (String) authentication.getPrincipal();
-        log.info("userId: {}", userId);
         
         UserInfo userInfo = userFacade.CheckAuth(userId);
 

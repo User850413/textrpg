@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.game.textrpg.application.hero.HeroFacade;
 import com.game.textrpg.common.response.CommonResponse;
+import com.game.textrpg.common.util.SecurityUtils;
 import com.game.textrpg.domains.hero.Hero;
+import com.game.textrpg.domains.hero.HeroCommand;
 import com.game.textrpg.domains.hero.HeroInfo;
 import com.game.textrpg.infrastructure.hero.HeroDto;
 
@@ -16,10 +18,10 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @RestController
@@ -30,21 +32,37 @@ public class HeroApiController {
     private final HeroFacade heroFacade;
     private static final Logger log = LoggerFactory.getLogger(HeroApiController.class);
     
+    /**
+     * 유저 id로 영웅 리스트 가져오기
+     * @return
+     */
     @GetMapping("/byUser")
-    public CommonResponse<List<HeroInfo>> getMethodName() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public CommonResponse<List<HeroInfo>> selectByUser() {
+        String userId = SecurityUtils.getCurrentUserId();
 
-        if(authentication == null || !authentication.isAuthenticated()){
+        if(userId == null){
             log.warn("인증되지 않은 요청");
             return null;
         }
-
-        String userId = (String) authentication.getPrincipal();
-        log.info("userId: {}", userId);
-
         List<HeroInfo> heroes = heroFacade.findByUser(userId);
 
         return CommonResponse.success(heroes);
     }
+
+    @PostMapping("/create")
+    public CommonResponse<HeroInfo> createHero(@RequestBody @Valid HeroDto.CreateRequest request) {
+        String userId = SecurityUtils.getCurrentUserId();
+
+        if(userId == null){
+            log.warn("인증되지 않은 요청");
+            return null;
+        }
+
+        HeroCommand command = request.toCommand();
+        HeroInfo hero = heroFacade.createHero(command, userId);
+
+        return CommonResponse.success(hero);
+    }
+    
     
 }

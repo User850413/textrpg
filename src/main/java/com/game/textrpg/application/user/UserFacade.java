@@ -45,7 +45,7 @@ public class UserFacade {
      * @return
      */
     public UserInfo CheckAuth(String token) {
-        UserInfo user = userService.checkAuth(token);
+        UserInfo user = userService.getUserById(token);
         
         return user;
     }

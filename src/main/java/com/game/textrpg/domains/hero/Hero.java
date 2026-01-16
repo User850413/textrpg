@@ -49,7 +49,7 @@ public class Hero {
     private Integer exp;
 
     @ManyToOne
-    @JoinColumn(name="user")
+    @JoinColumn(name="user_id")
     private User user;
 
 }

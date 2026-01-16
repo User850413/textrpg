@@ -28,4 +28,8 @@ public class Place {
     @Column
     @NonNull
     private String name;
+
+    @Column
+    @NonNull
+    private String placeId;
 }
