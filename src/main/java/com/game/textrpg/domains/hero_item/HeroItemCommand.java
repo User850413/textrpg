@@ -7,5 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class HeroItemCommand {
-    private final String HeroId;
+    private final String heroId;
+    private final String itemId;
+    private final Integer count;
 }
