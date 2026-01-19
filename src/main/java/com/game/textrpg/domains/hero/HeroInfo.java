@@ -2,9 +2,7 @@ package com.game.textrpg.domains.hero;
 
 import com.game.textrpg.domains.backpack.Backpack;
 import com.game.textrpg.domains.place.Place;
-import com.game.textrpg.domains.user.User;
 import com.game.textrpg.interfaces.web.hero.HeroResponseDto;
-import com.game.textrpg.interfaces.web.hero.HeroDto.HeroResponse;
 
 import lombok.Getter;
 
