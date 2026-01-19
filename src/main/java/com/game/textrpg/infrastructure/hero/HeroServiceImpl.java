@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.game.textrpg.domains.backpack.Backpack;
 import com.game.textrpg.domains.hero.Hero;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class HeroServiceImpl implements HeroService{
 
     private final HeroRepository heroRepository;
@@ -60,9 +62,14 @@ public class HeroServiceImpl implements HeroService{
     }
 
     @Override
-    public void deleteHero(String idStr) {
-        UUID id = UUID.fromString(idStr);
-        heroRepository.deleteById(id);
+    public void deleteHero(String idStr, String userIdStr) {
+        UUID heroId = UUID.fromString(idStr);
+        UUID userId = UUID.fromString(userIdStr);
+
+        long deleted = heroRepository.deleteByIdAndUser_Id(heroId, userId);
+        if(deleted == 0){
+            throw new IllegalStateException("삭제 권한이 없거나 대상이 없습니다.");
+        }
     }
     
 }

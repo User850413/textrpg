@@ -9,4 +9,5 @@ import com.game.textrpg.domains.hero.Hero;
 
 public interface HeroRepository  extends JpaRepository<Hero, UUID>{
     List<Hero> findByUser_Id(UUID userId);
+    long deleteByIdAndUser_Id(UUID heroId, UUID userId);
 }

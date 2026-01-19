@@ -46,11 +46,11 @@ public class HeroFacade {
         return hero;
     }
 
-    public void deleteHero(String id) {
-        if(id ==null){
+    public void deleteHero(String heroId, String userId) {
+        if(heroId ==null){
             throw new NullPointerException();
         }
-        heroService.deleteHero(id);
+        heroService.deleteHero(heroId, userId);
     }
     
 }

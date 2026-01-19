@@ -73,11 +73,16 @@ public class HeroApiController {
         return CommonResponse.success(hero);
     }
     
+    /**
+     * 영웅 삭제
+     * @param id
+     * @return
+     */
     @DeleteMapping("/delete/{id}")
     public CommonResponse<Void> deleteHero(@PathVariable String id) {
-        heroFacade.deleteHero(id);
+        String userId = SecurityUtils.getCurrentUserId();
+        heroFacade.deleteHero(id, userId);
         
         return CommonResponse.success(null);
     }
-    
 }
