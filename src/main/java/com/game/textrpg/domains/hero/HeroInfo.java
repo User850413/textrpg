@@ -12,7 +12,7 @@ import lombok.Getter;
 public class HeroInfo {
     private final String name;
     private final String id;
-    private final Place place;
+    private final Place location;
     private final Backpack backpack;
     private final Integer level;
     private final Integer exp;
@@ -22,7 +22,7 @@ public class HeroInfo {
         this.name = hero.getName();
         this.id = hero.getId().toString();
         this.backpack = hero.getBackpack();
-        this.place = hero.getLocation();
+        this.location = hero.getLocation();
         this.level = hero.getLevel();
         this.exp = hero.getExp();
         this.currentCarriage = currentCarriage;
@@ -34,9 +34,9 @@ public class HeroInfo {
                 .name(name)
                 .location(
                     PlaceDto.PlaceResponse.builder()
-                        .name(place.getName())
-                        .id(place.getId().toString())
-                        .placeId(place.getPlaceId())
+                        .name(location.getName())
+                        .id(location.getId().toString())
+                        .placeId(location.getPlaceId())
                         .build()
                 )
                 .backpack(

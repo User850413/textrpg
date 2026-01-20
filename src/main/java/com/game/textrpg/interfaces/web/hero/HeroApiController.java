@@ -60,8 +60,9 @@ public class HeroApiController {
     @GetMapping("/{heroId}/detail")
     public CommonResponse<HeroInfo> getHeroDetail(@PathVariable String heroId) {
         HeroInfo hero = heroFacade.getHeroDetail(heroId);
+        GeneralHeroResponseDto heroResponse = hero.toGeneralHeroResponseDto();
 
-        return CommonResponse.success(hero);
+        return CommonResponse.success(heroResponse);
     }
     
 
