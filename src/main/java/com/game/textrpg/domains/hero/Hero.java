@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -32,24 +33,30 @@ public class Hero {
     private UUID id;
 
     @Column(name="name")
+    @NonNull
     private String name;
 
     @OneToOne
     @JoinColumn(name="location")
+    @NonNull
     private Place location;
 
     @OneToOne
     @JoinColumn(name="backpack")
+    @NonNull
     private Backpack backpack;
 
     @Column(name="level")
+    @NonNull
     private Integer level;
 
     @Column(name="exp")
+    @NonNull
     private Integer exp;
 
     @ManyToOne
     @JoinColumn(name="user_id")
+    @NonNull
     private User user;
 
 }
