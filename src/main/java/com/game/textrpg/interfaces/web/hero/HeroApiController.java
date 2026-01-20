@@ -8,6 +8,7 @@ import com.game.textrpg.common.response.CommonResponse;
 import com.game.textrpg.common.util.SecurityUtils;
 import com.game.textrpg.domains.hero.HeroCommand;
 import com.game.textrpg.domains.hero.HeroInfo;
+import com.game.textrpg.interfaces.web.hero.HeroResponseDto.GeneralHeroResponseDto;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 @RestController
 @RequestMapping("/api/hero")
 @RequiredArgsConstructor
@@ -37,21 +36,29 @@ public class HeroApiController {
      * @return
      */
     @GetMapping("/byUser")
-    public CommonResponse<List<HeroResponseDto>> selectByUser() {
+    public CommonResponse<List<GeneralHeroResponseDto>> selectByUser() {
         String userId = SecurityUtils.getCurrentUserId();
 
         if(userId == null){
             log.warn("인증되지 않은 요청");
             return null;
         }
-        List<HeroResponseDto> heroes 
+        List<GeneralHeroResponseDto> heroes 
             = heroFacade.findByUser(userId)
                         .stream()
-                        .map(HeroInfo::toHeroResponseDto)
+                        .map(HeroInfo::toGeneralHeroResponseDto)
                         .toList();
 
         return CommonResponse.success(heroes);
     }
+
+    @GetMapping("/{heroId}/detail")
+    public String getHeroDetail(@PathVariable String heroId) {
+
+
+        return new String();
+    }
+    
 
     /**
      * 영웅 생성

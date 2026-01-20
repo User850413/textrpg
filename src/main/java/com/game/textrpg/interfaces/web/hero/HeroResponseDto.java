@@ -1,23 +1,40 @@
 package com.game.textrpg.interfaces.web.hero;
 
+import java.util.List;
+
+import com.game.textrpg.interfaces.web.backpack.BackpackDto;
+import com.game.textrpg.interfaces.web.place.PlaceDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class HeroResponseDto {
-    private String id;
-    private String name;
-    private String locationName;
-    private String locationId;
-    private String backpackName;
-    private Integer backpackMax;
-    private Integer level;
-    private Integer exp;
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GeneralHeroResponseDto {
+        private String id;
+        private String name;
+        private PlaceDto.PlaceResponse location;
+        private BackpackDto.BackpackResponse backpack;
+        private Integer level;
+        private Integer exp;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DetailHeroResponseDto {
+        private String id;
+        private String name;
+        private PlaceDto.PlaceResponse location;
+        private BackpackDto.BackpackResponse backpack;
+        private String level;
+        private Integer exp;
+    }
 }
-
-

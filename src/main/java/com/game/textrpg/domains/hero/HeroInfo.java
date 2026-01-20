@@ -2,7 +2,9 @@ package com.game.textrpg.domains.hero;
 
 import com.game.textrpg.domains.backpack.Backpack;
 import com.game.textrpg.domains.place.Place;
-import com.game.textrpg.interfaces.web.hero.HeroResponseDto;
+import com.game.textrpg.interfaces.web.backpack.BackpackDto;
+import com.game.textrpg.interfaces.web.hero.HeroResponseDto.GeneralHeroResponseDto;
+import com.game.textrpg.interfaces.web.place.PlaceDto;
 
 import lombok.Getter;
 
@@ -14,27 +16,39 @@ public class HeroInfo {
     private final Backpack backpack;
     private final Integer level;
     private final Integer exp;
+    private final Integer currentCarriage;
 
-    public HeroInfo(Hero hero) {
+    public HeroInfo(Hero hero, Integer currentCarriage) {
         this.name = hero.getName();
         this.id = hero.getId().toString();
         this.backpack = hero.getBackpack();
         this.place = hero.getLocation();
         this.level = hero.getLevel();
         this.exp = hero.getExp();
+        this.currentCarriage = currentCarriage;
     }
 
-    public HeroResponseDto toHeroResponseDto() {
-        return HeroResponseDto.builder()
+    public GeneralHeroResponseDto toGeneralHeroResponseDto() {
+        return GeneralHeroResponseDto.builder()
                 .id(id)
                 .name(name)
-                .locationName(place.getName())
-                .locationId(place.getPlaceId().toString())
-                .backpackName(backpack.getName())
-                .backpackMax(backpack.getMaxCarriage())
+                .location(
+                    PlaceDto.PlaceResponse.builder()
+                        .name(place.getName())
+                        .id(place.getId().toString())
+                        .placeId(place.getPlaceId())
+                        .build()
+                )
+                .backpack(
+                    BackpackDto.BackpackResponse.builder()
+                        .name(backpack.getName())
+                        .id(backpack.getId().toString())
+                        .maxCarriage(backpack.getMaxCarriage())
+                        .currentCarriage(currentCarriage)
+                        .build()
+                )
                 .level(level)
                 .exp(exp)
                 .build();
-
     }
 }

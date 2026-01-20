@@ -13,6 +13,7 @@ import com.game.textrpg.domains.hero.HeroInfo;
 import com.game.textrpg.domains.place.Place;
 import com.game.textrpg.domains.user.User;
 import com.game.textrpg.infrastructure.backpack.BackpackService;
+import com.game.textrpg.infrastructure.heroItem.HeroItemRepository;
 import com.game.textrpg.infrastructure.place.PlaceService;
 import com.game.textrpg.infrastructure.user.UserService;
 
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class HeroServiceImpl implements HeroService{
 
+    private final HeroItemRepository heroItemRepository;
     private final HeroRepository heroRepository;
     private final BackpackService backpackService;
     private final PlaceService placeService;
@@ -34,7 +36,10 @@ public class HeroServiceImpl implements HeroService{
         UUID userId = UUID.fromString(userIdStr);
         List<HeroInfo> heroes = 
             heroRepository.findByUser_Id(userId).stream()
-                .map(HeroInfo::new)
+                .map(hero -> {
+                    int itemCount = heroItemRepository.sumItemCountByHeroId(hero.getId());
+                    return new HeroInfo(hero, itemCount);
+                })
                 .toList();
 
         return heroes;
@@ -58,7 +63,7 @@ public class HeroServiceImpl implements HeroService{
 
         Hero newHero = heroRepository.save(hero);
 
-        return new HeroInfo(newHero);
+        return new HeroInfo(newHero, 0);
     }
 
     @Override
