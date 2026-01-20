@@ -76,5 +76,18 @@ public class HeroServiceImpl implements HeroService{
             throw new IllegalStateException("삭제 권한이 없거나 대상이 없습니다.");
         }
     }
+
+    @Override
+    public HeroInfo getHeroDetail(String heroIdStr) {
+        UUID heroId = UUID.fromString(heroIdStr);
+        
+        Hero hero = heroRepository.findById(heroId).orElse(null);
+        if(hero == null){
+            return null;
+        }
+        int itemCount = heroItemRepository.sumItemCountByHeroId(heroId);
+
+        return new HeroInfo(hero, itemCount);
+    }
     
 }

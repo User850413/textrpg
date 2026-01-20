@@ -52,11 +52,16 @@ public class HeroApiController {
         return CommonResponse.success(heroes);
     }
 
+    /**
+     * 영웅 id로 영웅 데이터 가져오기
+     * @param heroId
+     * @return
+     */
     @GetMapping("/{heroId}/detail")
-    public String getHeroDetail(@PathVariable String heroId) {
+    public CommonResponse<HeroInfo> getHeroDetail(@PathVariable String heroId) {
+        HeroInfo hero = heroFacade.getHeroDetail(heroId);
 
-
-        return new String();
+        return CommonResponse.success(hero);
     }
     
 

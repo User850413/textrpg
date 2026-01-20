@@ -46,11 +46,25 @@ public class HeroFacade {
         return hero;
     }
 
+    /**
+     * 영웅 삭제
+     * @param heroId
+     * @param userId
+     */
     public void deleteHero(String heroId, String userId) {
         if(heroId ==null){
             throw new NullPointerException();
         }
         heroService.deleteHero(heroId, userId);
+    }
+
+    public HeroInfo getHeroDetail(String heroId) {
+        if(heroId == null){
+            throw new NullPointerException();
+        }
+
+        HeroInfo hero = heroService.getHeroDetail(heroId);
+        return hero;
     }
     
 }

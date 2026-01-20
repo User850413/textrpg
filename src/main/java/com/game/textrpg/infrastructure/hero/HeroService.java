@@ -15,4 +15,6 @@ public interface HeroService {
 
     @Transactional
     void deleteHero(String heroId, String userId);
+
+    HeroInfo getHeroDetail(String heroId);
 }
