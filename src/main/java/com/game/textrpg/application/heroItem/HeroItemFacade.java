@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.game.textrpg.domains.hero_item.HeroItemCommand;
 import com.game.textrpg.domains.hero_item.HeroItemInfo;
 import com.game.textrpg.infrastructure.heroItem.HeroItemService;
+import com.game.textrpg.interfaces.web.hero_item.HeroItemResponseDto.HeroItemGetResponseDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,9 +31,18 @@ public class HeroItemFacade {
         return items;
     }
 
-    public HeroItemInfo addHeroItem(HeroItemCommand heroItemCommand){
+    /**
+     * 영웅이 아이템 획득
+     * @param heroItemCommand
+     * @return
+     */
+    public HeroItemGetResponseDto addHeroItem(HeroItemCommand heroItemCommand){
         HeroItemInfo heroItemInfo = heroItemService.addHeroItem(heroItemCommand);
+        int currentCount = heroItemService.heroCurrentCarriage(heroItemCommand.getHeroId().toString());
 
-        return heroItemInfo;
+        HeroItemGetResponseDto heroItemResponse = heroItemInfo.toResponseDto();
+        heroItemResponse.setCurrentCarriage(currentCount);
+
+        return heroItemResponse;
     }
 }

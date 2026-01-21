@@ -4,13 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class HeroItemResponseDto {
-    private String itemName;
-    private Integer itemCount;
-    private String description;
+
+    @Setter
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class HeroItemGetResponseDto{
+        private String itemName;
+        private Integer itemCount;
+        private String description;
+        private int currentCarriage;
+    }
 }

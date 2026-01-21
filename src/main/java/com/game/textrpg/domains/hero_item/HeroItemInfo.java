@@ -1,6 +1,6 @@
 package com.game.textrpg.domains.hero_item;
 
-import com.game.textrpg.interfaces.web.hero_item.HeroItemResponseDto;
+import com.game.textrpg.interfaces.web.hero_item.HeroItemResponseDto.HeroItemGetResponseDto;
 
 import lombok.Getter;
 
@@ -16,8 +16,8 @@ public class HeroItemInfo {
         this.description = description;
     }
 
-    public HeroItemResponseDto toResponseDto() {
-        return HeroItemResponseDto.builder()
+    public HeroItemGetResponseDto toResponseDto() {
+        return HeroItemGetResponseDto.builder()
                 .itemName(itemName)
                 .itemCount(itemCount)
                 .description(description)

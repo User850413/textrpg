@@ -8,4 +8,5 @@ import com.game.textrpg.domains.hero_item.HeroItemInfo;
 public interface HeroItemService {
     List<HeroItemInfo> findByHero(String heroId);
     HeroItemInfo addHeroItem(HeroItemCommand heroItemCommand);
+    int heroCurrentCarriage(String heroId);
 }

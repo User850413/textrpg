@@ -37,7 +37,7 @@ public class HeroServiceImpl implements HeroService{
         List<HeroInfo> heroes = 
             heroRepository.findByUser_Id(userId).stream()
                 .map(hero -> {
-                    int itemCount = heroItemRepository.sumItemCountByHeroId(hero.getId());
+                    int itemCount = heroItemRepository.countItemCountByHeroId(hero.getId());
                     return new HeroInfo(hero, itemCount);
                 })
                 .toList();
@@ -85,7 +85,7 @@ public class HeroServiceImpl implements HeroService{
         if(hero == null){
             return null;
         }
-        int itemCount = heroItemRepository.sumItemCountByHeroId(heroId);
+        int itemCount = heroItemRepository.countItemCountByHeroId(heroId);
 
         return new HeroInfo(hero, itemCount);
     }

@@ -7,6 +7,7 @@ import com.game.textrpg.application.heroItem.HeroItemFacade;
 import com.game.textrpg.common.response.CommonResponse;
 import com.game.textrpg.domains.hero_item.HeroItemCommand;
 import com.game.textrpg.domains.hero_item.HeroItemInfo;
+import com.game.textrpg.interfaces.web.hero_item.HeroItemResponseDto.HeroItemGetResponseDto;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +36,10 @@ public class HeroItemApiController {
     }
 
     @PostMapping("/getItem")
-    public CommonResponse<HeroItemInfo> addHeroItem(@RequestBody @Valid HeroItemDto.addHeroItemRequest request) {
+    public CommonResponse<HeroItemGetResponseDto> addHeroItem(@RequestBody @Valid HeroItemDto.addHeroItemRequest request) {
         HeroItemCommand command = request.toCommand();
 
-        HeroItemInfo heroItem = heroItemFacade.addHeroItem(command);
+        HeroItemGetResponseDto heroItem = heroItemFacade.addHeroItem(command);
         
         return CommonResponse.success(heroItem);
     }
