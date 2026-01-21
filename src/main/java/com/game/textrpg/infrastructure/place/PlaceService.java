@@ -1,7 +1,8 @@
 package com.game.textrpg.infrastructure.place;
 
-import com.game.textrpg.domains.place.Place;
+import com.game.textrpg.domains.place.PlaceInfo;
 
 public interface PlaceService {
-    Place getFirstPlace();    
+    PlaceInfo getFirstPlace();    
+    
 }

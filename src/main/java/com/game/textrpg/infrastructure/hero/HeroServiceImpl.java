@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.game.textrpg.domains.backpack.Backpack;
+import com.game.textrpg.domains.backpack.BackpackInfo;
 import com.game.textrpg.domains.hero.Hero;
 import com.game.textrpg.domains.hero.HeroCommand;
 import com.game.textrpg.domains.hero.HeroInfo;
 import com.game.textrpg.domains.place.Place;
+import com.game.textrpg.domains.place.PlaceInfo;
 import com.game.textrpg.domains.user.User;
 import com.game.textrpg.infrastructure.backpack.BackpackService;
 import com.game.textrpg.infrastructure.heroItem.HeroItemRepository;
@@ -47,8 +49,8 @@ public class HeroServiceImpl implements HeroService{
 
     @Override
     public HeroInfo createHero(HeroCommand command, String userId) {
-        Backpack DefaultBackpack = backpackService.getDefaultBackpack();
-        Place FirstPlace = placeService.getFirstPlace();
+        BackpackInfo defaultBackpack = backpackService.getDefaultBackpack();
+        PlaceInfo firstPlace = placeService.getFirstPlace();
         User user = userService.getEntityById(userId);
 
         Hero hero = Hero.builder()
@@ -56,8 +58,20 @@ public class HeroServiceImpl implements HeroService{
                 .level(command.getLevel())
                 .exp(command.getExp())
                 .user(user)
-                .backpack(DefaultBackpack)
-                .location(FirstPlace)
+                .backpack(
+                    Backpack.builder()
+                        .id(defaultBackpack.getId())
+                        .name(defaultBackpack.getName())
+                        .maxCarriage(defaultBackpack.getMaxCarriage())
+                        .build()
+                )
+                .location(
+                    Place.builder()
+                    .id(firstPlace.getId())
+                    .name(firstPlace.getName())
+                    .placeId(firstPlace.getPlaceId())
+                    .build()
+                )
                 .build();
 
 

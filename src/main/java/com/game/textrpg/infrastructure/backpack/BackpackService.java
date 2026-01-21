@@ -1,7 +1,7 @@
 package com.game.textrpg.infrastructure.backpack;
 
-import com.game.textrpg.domains.backpack.Backpack;
+import com.game.textrpg.domains.backpack.BackpackInfo;
 
 public interface BackpackService {
-    Backpack getDefaultBackpack();
+    BackpackInfo getDefaultBackpack();
 }
