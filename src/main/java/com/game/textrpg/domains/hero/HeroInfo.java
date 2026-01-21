@@ -1,10 +1,10 @@
 package com.game.textrpg.domains.hero;
 
 import com.game.textrpg.domains.backpack.Backpack;
+import com.game.textrpg.domains.backpack.BackpackInfo;
 import com.game.textrpg.domains.place.Place;
-import com.game.textrpg.interfaces.web.backpack.BackpackDto;
+import com.game.textrpg.domains.place.PlaceInfo;
 import com.game.textrpg.interfaces.web.hero.HeroResponseDto.GeneralHeroResponseDto;
-import com.game.textrpg.interfaces.web.place.PlaceDto;
 
 import lombok.Getter;
 
@@ -32,21 +32,8 @@ public class HeroInfo {
         return GeneralHeroResponseDto.builder()
                 .id(id)
                 .name(name)
-                .location(
-                    PlaceDto.PlaceResponse.builder()
-                        .name(location.getName())
-                        .id(location.getId().toString())
-                        .placeId(location.getPlaceId())
-                        .build()
-                )
-                .backpack(
-                    BackpackDto.BackpackResponse.builder()
-                        .name(backpack.getName())
-                        .id(backpack.getId().toString())
-                        .maxCarriage(backpack.getMaxCarriage())
-                        .currentCarriage(currentCarriage)
-                        .build()
-                )
+                .location(new PlaceInfo(location.getId(), location.getName(), location.getPlaceId()))
+                .backpack(new BackpackInfo(backpack))
                 .level(level)
                 .exp(exp)
                 .build();

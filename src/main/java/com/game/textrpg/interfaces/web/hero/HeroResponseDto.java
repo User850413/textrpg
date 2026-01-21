@@ -1,9 +1,7 @@
 package com.game.textrpg.interfaces.web.hero;
 
-import java.util.List;
-
-import com.game.textrpg.interfaces.web.backpack.BackpackDto;
-import com.game.textrpg.interfaces.web.place.PlaceDto;
+import com.game.textrpg.domains.backpack.BackpackInfo;
+import com.game.textrpg.domains.place.PlaceInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,8 +17,8 @@ public class HeroResponseDto {
     public static class GeneralHeroResponseDto {
         private String id;
         private String name;
-        private PlaceDto.PlaceResponse location;
-        private BackpackDto.BackpackResponse backpack;
+        private PlaceInfo location;
+        private BackpackInfo backpack;
         private Integer level;
         private Integer exp;
     }
@@ -32,8 +30,8 @@ public class HeroResponseDto {
     public static class DetailHeroResponseDto {
         private String id;
         private String name;
-        private PlaceDto.PlaceResponse location;
-        private BackpackDto.BackpackResponse backpack;
+        private PlaceInfo location;
+        private BackpackInfo backpack;
         private String level;
         private Integer exp;
     }
