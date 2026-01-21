@@ -103,5 +103,20 @@ public class HeroServiceImpl implements HeroService{
 
         return new HeroInfo(hero, itemCount);
     }
+
+    @Override
+    public PlaceInfo moveHero(String userIdStr, String heroIdStr, String placeIdStr) {
+        UUID userId = UUID.fromString(userIdStr);
+        UUID heroId = UUID.fromString(heroIdStr);
+        UUID placeId = UUID.fromString(placeIdStr);
+
+        int isMoved = heroRepository.moveHero(userId, heroId, placeId);
+        if(isMoved == 0){
+            throw new IllegalStateException("움직임에 실패하였습니다.");
+        }
+
+        PlaceInfo movedPlace = placeService.getPlaceDetail(placeIdStr);
+        return movedPlace;
+    }
     
 }

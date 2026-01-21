@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.game.textrpg.domains.hero.HeroCommand;
 import com.game.textrpg.domains.hero.HeroInfo;
+import com.game.textrpg.domains.place.PlaceInfo;
 import com.game.textrpg.infrastructure.hero.HeroService;
 
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,11 @@ public class HeroFacade {
         heroService.deleteHero(heroId, userId);
     }
 
+    /**
+     * 영웅 상세데이터
+     * @param heroId
+     * @return
+     */
     public HeroInfo getHeroDetail(String heroId) {
         if(heroId == null){
             throw new NullPointerException();
@@ -67,4 +73,10 @@ public class HeroFacade {
         return hero;
     }
     
+    /**
+     * 영웅 움직입
+     */
+    public PlaceInfo moveHero(String userId, String heroId, String placeId) {
+        return heroService.moveHero(userId, heroId, placeId);
+    }
 }

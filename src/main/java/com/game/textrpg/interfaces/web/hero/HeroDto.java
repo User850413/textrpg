@@ -11,6 +11,9 @@ import lombok.ToString;
 
 public class HeroDto {
 
+    /**
+     * 영웅 생성 dto
+     */
     @Getter
     @NoArgsConstructor
     public static class CreateRequest {
@@ -28,14 +31,17 @@ public class HeroDto {
         }
     }
 
+    /**
+     * 영웅 움직임 dto
+     */
     @Getter
-    @ToString
-    public static class HeroResponse {
-        private final String name;
+    @NoArgsConstructor
+    public static class moveRequest {
 
-        public HeroResponse(HeroInfo heroInfo){
-            this.name = heroInfo.getName();
-        }
+        @NotEmpty(message= "hero id는 필수 입력값입니다.")
+        private String heroId;
+
+        @NotEmpty(message="place id는 필수 입력값입니다.")
+        private String placeId;
     }
-
 }

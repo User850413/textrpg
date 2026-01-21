@@ -8,6 +8,7 @@ import com.game.textrpg.common.response.CommonResponse;
 import com.game.textrpg.common.util.SecurityUtils;
 import com.game.textrpg.domains.hero.HeroCommand;
 import com.game.textrpg.domains.hero.HeroInfo;
+import com.game.textrpg.domains.place.PlaceInfo;
 import com.game.textrpg.interfaces.web.hero.HeroResponseDto.GeneralHeroResponseDto;
 
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,12 +39,7 @@ public class HeroApiController {
      */
     @GetMapping("/byUser")
     public CommonResponse<List<GeneralHeroResponseDto>> selectByUser() {
-        String userId = SecurityUtils.getCurrentUserId();
-
-        if(userId == null){
-            log.warn("인증되지 않은 요청");
-            return null;
-        }
+        String userId = CheckUserId();
         List<GeneralHeroResponseDto> heroes 
             = heroFacade.findByUser(userId)
                         .stream()
@@ -73,12 +70,7 @@ public class HeroApiController {
      */
     @PostMapping("/create")
     public CommonResponse<HeroInfo> createHero(@RequestBody @Valid HeroDto.CreateRequest request) {
-        String userId = SecurityUtils.getCurrentUserId();
-
-        if(userId == null){
-            log.warn("인증되지 않은 요청");
-            return null;
-        }
+        String userId = CheckUserId();
 
         HeroCommand command = request.toCommand();
         HeroInfo hero = heroFacade.createHero(command, userId);
@@ -93,9 +85,35 @@ public class HeroApiController {
      */
     @DeleteMapping("/delete/{id}")
     public CommonResponse<Void> deleteHero(@PathVariable String id) {
-        String userId = SecurityUtils.getCurrentUserId();
+        String userId = CheckUserId();
         heroFacade.deleteHero(id, userId);
         
         return CommonResponse.success(null);
+    }
+
+    /**
+     * 영웅 움직임
+     * @param reqeust
+     * @return
+     */
+    @PatchMapping("/move")
+    public CommonResponse<PlaceInfo> moveHero(@RequestBody @Valid HeroDto.moveRequest moveRequest){
+        String userId = CheckUserId();
+        String heroId = moveRequest.getHeroId();
+        String placeId = moveRequest.getPlaceId();
+
+        PlaceInfo movedPlace = heroFacade.moveHero(userId, heroId, placeId);
+
+        return CommonResponse.success(movedPlace);
+    }
+
+    private String CheckUserId(){
+        String userId = SecurityUtils.getCurrentUserId();
+        if(userId == null){
+            log.warn("인증되지 않은 요청");
+            return null;
+        }
+
+        return userId;
     }
 }

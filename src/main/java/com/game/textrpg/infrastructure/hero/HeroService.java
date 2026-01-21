@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.game.textrpg.domains.hero.HeroCommand;
 import com.game.textrpg.domains.hero.HeroInfo;
+import com.game.textrpg.domains.place.PlaceInfo;
 
 import jakarta.transaction.Transactional;
 
@@ -17,4 +18,6 @@ public interface HeroService {
     void deleteHero(String heroId, String userId);
 
     HeroInfo getHeroDetail(String heroId);
+
+    PlaceInfo moveHero(String userId, String heroId, String placeId);
 }
