@@ -11,4 +11,6 @@ public interface PlaceRepository extends JpaRepository<Place, UUID>{
     
     @Query(value="SELECT p FROM Place p WHERE p.placeId = 'HOME'")
     Place getFirstPlace();
+
+    
 }
