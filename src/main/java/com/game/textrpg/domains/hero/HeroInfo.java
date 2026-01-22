@@ -16,16 +16,14 @@ public class HeroInfo {
     private final Backpack backpack;
     private final Integer level;
     private final Integer exp;
-    private final Integer currentCarriage;
 
-    public HeroInfo(Hero hero, Integer currentCarriage) {
+    public HeroInfo(Hero hero) {
         this.name = hero.getName();
         this.id = hero.getId().toString();
         this.backpack = hero.getBackpack();
         this.location = hero.getLocation();
         this.level = hero.getLevel();
         this.exp = hero.getExp();
-        this.currentCarriage = currentCarriage;
     }
 
     public GeneralHeroResponseDto toGeneralHeroResponseDto() {

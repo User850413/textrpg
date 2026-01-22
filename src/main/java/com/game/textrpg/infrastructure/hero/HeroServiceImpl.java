@@ -38,10 +38,7 @@ public class HeroServiceImpl implements HeroService{
         UUID userId = UUID.fromString(userIdStr);
         List<HeroInfo> heroes = 
             heroRepository.findByUser_Id(userId).stream()
-                .map(hero -> {
-                    int itemCount = heroItemRepository.countItemCountByHeroId(hero.getId());
-                    return new HeroInfo(hero, itemCount);
-                })
+                .map(hero -> new HeroInfo(hero))
                 .toList();
 
         return heroes;
@@ -77,7 +74,7 @@ public class HeroServiceImpl implements HeroService{
 
         Hero newHero = heroRepository.save(hero);
 
-        return new HeroInfo(newHero, 0);
+        return new HeroInfo(newHero);
     }
 
     @Override
@@ -99,9 +96,8 @@ public class HeroServiceImpl implements HeroService{
         if(hero == null){
             return null;
         }
-        int itemCount = heroItemRepository.countItemCountByHeroId(heroId);
 
-        return new HeroInfo(hero, itemCount);
+        return new HeroInfo(hero);
     }
 
     @Override
