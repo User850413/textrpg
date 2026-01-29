@@ -21,4 +21,15 @@ public class PlaceResponseDto {
         private String placeId;
         private List<PlaceInfo> connectedPlace;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ActionPlaceResponseDto {
+        private String id;
+        private String name;
+        private String type;
+        private long realTime;
+    }
 }
